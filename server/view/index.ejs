@@ -1,11 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<head>
+  <% include head/default.ejs %>
+  <title>NPH | Node.js Package Helper</title>
+</head>
+<body>
+<% include header/default.ejs %>
+<% include component/search.ejs %>
+<div class="am-container">
+  <div class="am-panel am-panel-default">
+    <div class="am-panel-hd">Help you find Node.js packages!</div>
+    <div class="am-panel-bd">
+      Node.js developers always have trouble choosing packages with npm (a package manager for javascript, the largest
+      ecosystem of open source libraries in the world). There are huge amount of various packages in npm, but good and
+      bad are mixed together. Developers need a tool to know the package trend and quality.
+    </div>
+  </div>
+  <div class="am-panel am-panel-default">
+    <div class="am-panel-hd">What's Node.js Package Helper?</div>
+    <div class="am-panel-bd">
+      Node.js Package Helper (NPH) is a web application that help developers choose packages by providing package trend,
+      comparison, quality (build, test and test coverage). NPH is aimed at improving the package quality in Node.js
+      ecosystem.
+    </div>
+  </div>
+</div>
+<% include script/default.ejs %>
+</body>
 </html>

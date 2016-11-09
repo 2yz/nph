@@ -9,6 +9,9 @@ const Download = require('../model/download')
 
 
 var DownloadService = {
+  findAll: function*(name) {
+    return yield* DownloadService.find(name, '2012-01-01', time.getDateStr(new Date()))
+  },
   find: function*(name, start, end) {
     var pack = yield Package.findOne({_id: name})
     if (!pack) throw new Error('no pack')
@@ -18,7 +21,7 @@ var DownloadService = {
       console.log('fetch')
       yield* DownloadService.fetch(name)
     }
-    return yield Download.find({'package': name, $and: [{day: {$gte: start}}, {day: {$lte: end}}]})
+    return yield Download.find({'package': name, $and: [{day: {$gte: start}}, {day: {$lte: end}}]}).sort({day: 1})
   },
   fetch: function*(name) {
     try {
@@ -34,7 +37,7 @@ var DownloadService = {
       } else {
         url = `https://api.npmjs.org/downloads/range/${time.getRangeFromStr(downs[0].day)}/${name}`
       }
-      var downloads = 0
+      console.log('download url:', url)
       var body = yield rp(url)
       var result = JSON.parse(body)
       if (!result.downloads || !Array.isArray(result.downloads) || result.downloads.length == 0) {
@@ -43,16 +46,26 @@ var DownloadService = {
         var query = result.downloads
         for (var item of query) {
           item.package = name
-          downloads += item.downloads
         }
         yield Download.insertMany(query)
       }
-      yield Package.update({_id: name}, {$inc: {downloads: downloads}, $set: {downloadUpdatedAt: new Date()}})
+      var downloads = yield* DownloadService.getDownloads(name)
+      console.log('downloads:', downloads)
+      yield Package.update({_id: name}, {$set: {downloads: downloads, downloadUpdatedAt: new Date()}})
       yield* Lock.downloadUnlock(name)
     } catch (err) {
       console.error(new Date(), 'DownloadService fetch error:', err)
       yield* Lock.downloadUnlock(name)
     }
+  },
+  getDownloads: function*(name) {
+    var downloads = yield Download.find({'package': name})
+    var count = 0
+    for (var item of downloads) {
+      count += item.downloads
+    }
+    console.log('count', count)
+    return count
   }
 }
 

@@ -5,7 +5,7 @@ var Schema = mongoose.Schema
 var downloadSchema = new Schema({
   'package': {type: String},
   day: {type: String},
-  downloads: {type: String}
+  downloads: {type: Number}
 })
 downloadSchema.plugin(paginate)
 

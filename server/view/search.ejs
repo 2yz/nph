@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <% include head/default.ejs %>
+  <title>NPH | Node.js Package Helper</title>
+</head>
+<body>
+<% include header/default.ejs %>
+<% include component/search.ejs %>
+<div class="am-container">
+  <table class="am-table am-table-bordered am-table-radius am-table-striped">
+    <% results.forEach(function (item) { %>
+    <tr>
+      <td>
+        <a href="/package/<%= item['package']['_id'] %>">
+          <h1 style="display: inline-block; margin: 0 16px 0 0;"><%= item['package']['name'] %></h1>
+        </a>
+        <span class="am-badge am-badge-warning"><i class="am-icon-download"></i> <%= numeral(item['package']['downloads']).format() %></span>
+        <% if (item['github']) { %>
+        <span class="am-badge am-badge-warning"><i class="am-icon-star"></i> <%= numeral(item['github'].stargazers_count).format() %></span>
+        <span class="am-badge am-badge-warning"><i class="am-icon-eye"></i> <%= numeral(item['github'].subscribers_count).format() %></span>
+        <span class="am-badge am-badge-warning"><i class="am-icon-code-fork"></i> <%= numeral(item['github'].forks_count).format() %></span>
+        <% } %>
+        <p style="margin: 6px 0;"><%= item['package']['description'] %></p>
+        <span style="font-size: 8px">keywords: <%= item['package']['keywords'].join(', ') %></span>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+</div>
+<% include script/default.ejs %>
+</body>
+</html>

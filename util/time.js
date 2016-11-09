@@ -16,11 +16,19 @@ var Time = {
   getRangeFromStr: function (last) {
     var old = new Date(last)
     old.setTime(old.getTime() + 24 * 60 * 60 * 1000)
-    return `${old}:${Time.getLatestDateStr()}`
+    return `${Time.getDateStr(old)}:${Time.getLatestDateStr()}`
   },
   getLastMonthObject: function () {
     var now = new Date()
     var old = new Date(now.getTime() - 31 * 24 * 60 * 60 * 1000)
+    return {
+      start: Time.getDateStr(old),
+      end: Time.getDateStr(now)
+    }
+  },
+  getLastYearObject: function () {
+    var now = new Date()
+    var old = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000)
     return {
       start: Time.getDateStr(old),
       end: Time.getDateStr(now)

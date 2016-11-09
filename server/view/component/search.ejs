@@ -1,0 +1,12 @@
+<div class="am-container" style="margin-bottom: 20px;">
+  <form action="/search" method="get">
+    <div class="am-input-group">
+      <input name="q" type="text" class="am-form-field"
+             <% if(typeof searchStr != 'undefined'){ %>value="<%= searchStr %>"<% } %>
+             placeholder="package name / keywords / command (e.g. compare)"/>
+    <span class="am-input-group-btn">
+      <button class="am-btn am-btn-default" type="submit"><span class="am-icon-search"></span> </button>
+    </span>
+    </div>
+  </form>
+</div>

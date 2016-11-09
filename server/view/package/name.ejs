@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <% include ../head/default.ejs %>
+  <title><%= name %> | NPH</title>
+</head>
+<body>
+<% include ../header/default.ejs %>
+<% include ../component/search.ejs %>
+<div class="am-container">
+  <h1 class="package-header"><%= name %></h1>
+  <span class="am-badge am-badge-warning"><i class="am-icon-download"></i> <%= numeral(downloads).format() %></span>
+  <% if (github) { %>
+  <span class="am-badge am-badge-warning"><i class="am-icon-star"></i> <%= numeral(github.stargazers_count).format() %></span>
+  <span class="am-badge am-badge-warning"><i class="am-icon-eye"></i> <%= numeral(github.subscribers_count).format() %></span>
+  <span class="am-badge am-badge-warning"><i class="am-icon-code-fork"></i> <%= numeral(github.forks_count).format() %></span>
+  <% } %>
+  <% if (travis) { %>
+  <span class="am-badge am-badge-warning"><i class="am-icon-wrench"></i> <%= travis.state %></span>
+  <% } %>
+  <p><%= description %></p>
+  <canvas id="downloadsChart" style="width: 100%;height: 400px;"></canvas>
+</div>
+<!-- TODO 限制容器内部图片长度 -->
+<div class="am-container" style="position:relative; margin-top: 16px;"><%- readme %></div>
+<% include ../script/default.ejs %>
+<script>
+  var ctx = $("#downloadsChart")
+  $.getJSON("/downloads/all/<%- id %>", function (data) {
+    console.log(data)
+    var downloadsChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: data.labels,
+        datasets: [{
+          label: 'downloads',
+//          backgroundColor: data.color,
+//          borderColor: data.color,
+//          pointBorderColor: data.color,
+          data: data.data
+        }]
+      }
+    })
+  })
+  //  var downloadsChart = new Chart(ctx, {
+  //    type: 'line',
+  //    data: {
+  //      labels: ["January", "February", "March", "April", "May", "June", "July"],
+  //      datasets: [
+  //        {
+  //          label: "My First dataset",
+  //          fill: false,
+  //          lineTension: 0.1,
+  //          backgroundColor: "rgba(75,192,192,0.4)",
+  //          borderColor: "rgba(75,192,192,1)",
+  //          borderCapStyle: 'butt',
+  //          borderDashOffset: 0.0,
+  //          borderJoinStyle: 'miter',
+  //          pointBorderColor: "rgba(75,192,192,1)",
+  //          pointBackgroundColor: "#fff",
+  //          pointBorderWidth: 1,
+  //          pointHoverRadius: 5,
+  //          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+  //          pointHoverBorderColor: "rgba(220,220,220,1)",
+  //          pointHoverBorderWidth: 2,
+  //          pointRadius: 1,
+  //          pointHitRadius: 10,
+  //          data: [65, 59, 80, 81, 56, 55, 40],
+  //          spanGaps: false
+  //        }
+  //      ]
+  //    }
+  //  })
+  //  var downloadsChart = new Chart(ctx, {
+  //    type: 'line',
+  //    data: {
+  //      labels: ["January", "February", "March", "April", "May", "June", "July"],
+  //      datasets: [{
+  //        label: '#1',
+  //        backgroundColor: "rgba(233, 252, 166, 0.5610945007370611)",
+  //        borderColor: "rgba(233, 252, 166, 0.5610945007370611)",
+  //        pointBorderColor: "rgba(233, 252, 166, 0.5610945007370611)",
+  //        data: [22, 99, 34, 22, 7, 11, 77]
+  //      }, {
+  //        label: '#2',
+  //        backgroundColor: "rgba(242, 130, 138, 0.23081371544262863)",
+  //        borderColor: "rgba(242, 130, 138, 0.23081371544262863)",
+  //        pointBorderColor: "rgba(242, 130, 138, 0.23081371544262863)",
+  //        data: [65, 59, 80, 81, 56, 55, 40]
+  //      }]
+  //    }
+  //  })
+
+</script>
+</body>
+</html>
